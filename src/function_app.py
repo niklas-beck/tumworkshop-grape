@@ -29,3 +29,21 @@ def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
 # Add a new function here
 
 # TODO
+@app.route(route="http-sum")
+def http_sum(req: func.HttpRequest) -> func.HttpResponse:
+    logging.info('Python sum function processed a request.')
+
+    a = req.params.get('a')
+    b = req.params.get('b')
+
+    if a and b:
+        try:
+            a = int(a)
+            b = int(b)
+            result = a + b
+            return func.HttpResponse(f"The sum of {a} and {b} is: {result}")
+        except ValueError:
+            return func.HttpResponse("Invalid input. Please provide valid integers for 'a' and 'b'.", status_code=400)
+    else:
+        return func.HttpResponse("Please provide values for 'a' and 'b' parameters.", status_code=200)
+
